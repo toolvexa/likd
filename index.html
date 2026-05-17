@@ -1,419 +1,887 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lisa Kanning | Interior Design</title>
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PRIMESTAY — Ultra Luxury Travel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Tenor+Sans&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8C97A;
+    --gold-pale: #F5E6C0;
+    --black: #060606;
+    --dark: #0E0E0E;
+    --dark-2: #161616;
+    --dark-3: #1F1F1F;
+    --white: #F8F4EE;
+    --white-dim: rgba(248,244,238,0.6);
+    --white-faint: rgba(248,244,238,0.12);
+  }
 
-    <!-- Google Fonts for Serif Typography -->
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Tenor Sans', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
 
-    <!-- Tailwind Config for Custom Fonts -->
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        serif: ['Playfair Display', 'serif'],
-                    }
-                }
-            }
-        }
-    </script>
+  /* CURSOR */
+  .cursor {
+    width: 12px; height: 12px;
+    background: var(--gold);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none; z-index: 99999;
+    mix-blend-mode: difference;
+  }
+  .cursor-ring {
+    width: 40px; height: 40px;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none; z-index: 99998;
+    opacity: 0.6;
+  }
 
-    <!-- Custom CSS for Animations -->
-    <style>
-        .reveal-on-scroll {
-            opacity: 0;
-            transform: translateY(40px) scale(0.95);
-            transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        .reveal-on-scroll.is-visible {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
-        .delay-100 { transition-delay: 100ms; }
-        .delay-200 { transition-delay: 200ms; }
-        .delay-300 { transition-delay: 300ms; }
-        
-        .ticker-container {
-            overflow: hidden;
-            white-space: nowrap;
-            width: 100%;
-            background: #0f172a;
-            color: white;
-            padding: 1rem 0;
-        }
-        .ticker-text {
-            display: inline-block;
-            animation: ticker 20s linear infinite;
-        }
-        @keyframes ticker {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-        .float-animation {
-            animation: float 6s ease-in-out infinite;
-        }
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-            100% { transform: translateY(0px); }
-        }
+  /* NOISE */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 9998; opacity: 0.35;
+  }
 
-        /* Hide scrollbar for cleaner look if desired */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #fafafc;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
-        }
-    </style>
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 1000;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 28px 60px;
+    background: linear-gradient(to bottom, rgba(6,6,6,0.95) 0%, transparent 100%);
+    backdrop-filter: blur(2px);
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; font-weight: 300; letter-spacing: 0.35em;
+    color: var(--white); text-decoration: none;
+  }
+  .nav-logo span { color: var(--gold); font-style: italic; }
+  .nav-links { display: flex; gap: 48px; list-style: none; }
+  .nav-links a {
+    font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--white-dim); text-decoration: none; transition: color 0.3s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; bottom: -4px; left: 0;
+    width: 0; height: 1px; background: var(--gold);
+    transition: width 0.4s cubic-bezier(0.23,1,0.32,1);
+  }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-links a:hover::after { width: 100%; }
+  .nav-cta {
+    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--black); background: var(--gold);
+    padding: 12px 28px; text-decoration: none; transition: background 0.3s;
+  }
+  .nav-cta:hover { background: var(--gold-light); }
+
+  /* HERO */
+  .hero {
+    position: relative; height: 100vh; min-height: 700px;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 0 60px 80px; overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(160deg, rgba(201,168,76,0.08) 0%, transparent 50%),
+      linear-gradient(to top, rgba(6,6,6,0.95) 0%, rgba(6,6,6,0.4) 40%, rgba(6,6,6,0.2) 100%),
+      url('https://images.unsplash.com/photo-1500916434205-0c77489c6cf7?w=1800&q=80') center/cover no-repeat;
+    transform: scale(1.05);
+    animation: heroZoom 20s ease-out forwards;
+  }
+  @keyframes heroZoom { from{transform:scale(1.05)}to{transform:scale(1)} }
+
+  .hero-eyebrow {
+    font-size: 10px; letter-spacing: 0.4em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 24px;
+    opacity: 0; animation: fadeUp 1s 0.5s forwards;
+  }
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(64px, 9vw, 140px); font-weight: 300;
+    line-height: 0.9; letter-spacing: -0.02em; margin-bottom: 32px;
+    opacity: 0; animation: fadeUp 1s 0.7s forwards;
+  }
+  .hero-title em { font-style: italic; color: var(--gold); }
+  .hero-desc {
+    max-width: 480px; font-size: 13px; line-height: 1.9;
+    color: var(--white-dim); margin-bottom: 48px; letter-spacing: 0.03em;
+    opacity: 0; animation: fadeUp 1s 0.9s forwards;
+  }
+  .hero-actions {
+    display: flex; gap: 24px; align-items: center;
+    opacity: 0; animation: fadeUp 1s 1.1s forwards;
+  }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 12px;
+    background: var(--gold); color: var(--black);
+    padding: 18px 40px; font-size: 10px; letter-spacing: 0.25em;
+    text-transform: uppercase; text-decoration: none;
+    font-family: 'Tenor Sans', sans-serif; transition: all 0.3s;
+    position: relative; overflow: hidden;
+  }
+  .btn-primary::before {
+    content: ''; position: absolute; inset: 0;
+    background: var(--gold-light); transform: translateX(-100%);
+    transition: transform 0.4s cubic-bezier(0.23,1,0.32,1);
+  }
+  .btn-primary:hover::before { transform: translateX(0); }
+  .btn-primary span { position: relative; z-index: 1; }
+  .btn-ghost {
+    display: inline-flex; align-items: center; gap: 10px;
+    color: var(--white-dim); font-size: 10px; letter-spacing: 0.2em;
+    text-transform: uppercase; text-decoration: none;
+    border-bottom: 1px solid rgba(248,244,238,0.2); padding-bottom: 4px;
+    transition: color 0.3s, border-color 0.3s;
+  }
+  .btn-ghost:hover { color: var(--gold); border-color: var(--gold); }
+
+  .hero-stats {
+    position: absolute; right: 60px; top: 50%; transform: translateY(-50%);
+    display: flex; flex-direction: column; gap: 40px;
+    opacity: 0; animation: fadeIn 1s 1.3s forwards;
+  }
+  .hero-stat { text-align: right; }
+  .hero-stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 42px; font-weight: 300; color: var(--gold); line-height: 1;
+  }
+  .hero-stat-label {
+    font-size: 9px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--white-dim); margin-top: 4px;
+  }
+  .hero-scroll {
+    position: absolute; right: 60px; bottom: 80px;
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+    opacity: 0; animation: fadeIn 1s 1.5s forwards;
+  }
+  .hero-scroll-line {
+    width: 1px; height: 80px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    animation: scrollLine 2s 1.5s infinite;
+  }
+  @keyframes scrollLine { 0%,100%{transform:scaleY(1);opacity:1} 50%{transform:scaleY(0.5);opacity:0.4} }
+  .hero-scroll span {
+    font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--gold); writing-mode: vertical-lr;
+  }
+
+  @keyframes fadeUp { from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)} }
+  @keyframes fadeIn { from{opacity:0}to{opacity:1} }
+
+  /* MARQUEE */
+  .marquee-wrap { background: var(--gold); padding: 14px 0; overflow: hidden; display: flex; }
+  .marquee-track {
+    display: flex; animation: marquee 30s linear infinite; white-space: nowrap;
+  }
+  .marquee-track span {
+    font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--black); padding: 0 32px;
+  }
+  .marquee-sep { color: rgba(0,0,0,0.3) !important; }
+  @keyframes marquee { from{transform:translateX(0)}to{transform:translateX(-50%)} }
+
+  /* COMMONS */
+  section { position: relative; }
+  .section-label {
+    font-size: 9px; letter-spacing: 0.4em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 20px;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 4vw, 68px); font-weight: 300;
+    line-height: 1.05; letter-spacing: -0.01em;
+  }
+  .section-title em { font-style: italic; color: var(--gold); }
+
+  /* DESTINATIONS */
+  .destinations { padding: 120px 60px; background: var(--dark); }
+  .destinations-header {
+    display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 72px;
+  }
+  .destinations-header p {
+    max-width: 320px; font-size: 13px; line-height: 1.8;
+    color: var(--white-dim); letter-spacing: 0.03em;
+  }
+  .dest-grid {
+    display: grid; grid-template-columns: 1.4fr 1fr 1fr;
+    grid-template-rows: auto auto; gap: 3px;
+  }
+  .dest-card { position: relative; overflow: hidden; cursor: none; }
+  .dest-card:first-child { grid-row: span 2; height: 700px; }
+  .dest-card:not(:first-child) { height: 348px; }
+  .dest-card img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 0.8s cubic-bezier(0.23,1,0.32,1); filter: brightness(0.7);
+  }
+  .dest-card:hover img { transform: scale(1.06); filter: brightness(0.5); }
+  .dest-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(6,6,6,0.9) 0%, transparent 60%);
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 36px; transition: background 0.4s;
+  }
+  .dest-card:hover .dest-overlay { background: linear-gradient(to top,rgba(6,6,6,.95) 0%,rgba(6,6,6,.3) 100%); }
+  .dest-country { font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+  .dest-name { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 300; color: var(--white); margin-bottom: 12px; letter-spacing: 0.02em; }
+  .dest-card:first-child .dest-name { font-size: 48px; }
+  .dest-desc {
+    font-size: 12px; line-height: 1.7; color: var(--white-dim); max-width: 300px;
+    opacity: 0; transform: translateY(10px); transition: all 0.4s 0.1s; margin-bottom: 20px;
+  }
+  .dest-card:hover .dest-desc { opacity: 1; transform: translateY(0); }
+  .dest-link {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--gold); text-decoration: none;
+    opacity: 0; transform: translateY(10px); transition: all 0.4s 0.2s;
+  }
+  .dest-card:hover .dest-link { opacity: 1; transform: translateY(0); }
+
+  /* PHILOSOPHY */
+  .philosophy {
+    padding: 160px 60px; background: var(--black);
+    display: grid; grid-template-columns: 1fr 1fr; gap: 100px; align-items: center;
+  }
+  .philosophy-visual { position: relative; height: 600px; }
+  .philosophy-img-main {
+    position: absolute; right: 0; top: 0; width: 80%; height: 480px;
+    object-fit: cover; filter: brightness(0.85);
+  }
+  .philosophy-img-secondary {
+    position: absolute; left: 0; bottom: 0; width: 55%; height: 260px;
+    object-fit: cover; border: 4px solid var(--black); filter: brightness(0.85);
+  }
+  .philosophy-badge {
+    position: absolute; left: 50%; bottom: 80px; transform: translateX(-50%);
+    width: 120px; height: 120px; border-radius: 50%; background: var(--gold);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 2;
+  }
+  .philosophy-badge-num { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 300; color: var(--black); line-height: 1; }
+  .philosophy-badge-text { font-size: 8px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--black); text-align: center; margin-top: 4px; }
+  .philosophy-content p { font-size: 13px; line-height: 2; color: var(--white-dim); margin-bottom: 24px; letter-spacing: 0.03em; }
+  .philosophy-features { margin-top: 56px; display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+  .phi-feature { border-top: 1px solid rgba(201,168,76,0.2); padding-top: 20px; }
+  .phi-feature-icon { font-size: 22px; margin-bottom: 12px; }
+  .phi-feature-title { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 400; color: var(--white); margin-bottom: 8px; }
+  .phi-feature-desc { font-size: 11px; line-height: 1.7; color: var(--white-dim); letter-spacing: 0.02em; }
+
+  /* EXPERIENCES */
+  .experiences { padding: 120px 60px; background: var(--dark-2); }
+  .experiences-header { margin-bottom: 80px; }
+  .exp-item {
+    display: grid; grid-template-columns: 80px 1fr 1fr auto;
+    align-items: center; gap: 40px; padding: 40px 0;
+    border-bottom: 1px solid rgba(248,244,238,0.08);
+    transition: all 0.4s; cursor: none;
+  }
+  .exp-item:hover { padding-left: 20px; }
+  .exp-num { font-family: 'Cormorant Garamond', serif; font-size: 14px; color: var(--gold); letter-spacing: 0.1em; }
+  .exp-name { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 300; color: var(--white); letter-spacing: 0.02em; }
+  .exp-item:hover .exp-name { color: var(--gold); }
+  .exp-desc { font-size: 12px; line-height: 1.7; color: var(--white-dim); letter-spacing: 0.02em; }
+  .exp-link { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); text-decoration: none; opacity: 0; transition: opacity 0.3s; white-space: nowrap; }
+  .exp-item:hover .exp-link { opacity: 1; }
+
+  /* TESTIMONIALS */
+  .testimonials { padding: 140px 60px; background: var(--black); position: relative; overflow: hidden; }
+  .testimonials::before {
+    content: '"'; position: absolute; top: 60px; left: 40px;
+    font-family: 'Cormorant Garamond', serif; font-size: 400px;
+    color: rgba(201,168,76,0.05); line-height: 1; pointer-events: none;
+  }
+  .testimonials-inner { max-width: 900px; margin: 0 auto; text-align: center; }
+  .test-stars { display: flex; justify-content: center; gap: 6px; margin-bottom: 40px; }
+  .test-stars span { color: var(--gold); font-size: 14px; }
+  .test-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(24px, 3vw, 44px); font-weight: 300; font-style: italic;
+    line-height: 1.4; color: var(--white); margin-bottom: 48px; letter-spacing: 0.01em;
+    transition: opacity 0.3s;
+  }
+  .test-author { font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+  .test-role { font-size: 11px; color: var(--white-dim); letter-spacing: 0.1em; }
+  .test-dots { display: flex; justify-content: center; gap: 12px; margin-top: 60px; }
+  .test-dot { width: 32px; height: 2px; background: rgba(248,244,238,0.2); cursor: pointer; transition: background 0.3s; }
+  .test-dot.active { background: var(--gold); }
+  .test-cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; margin-top: 80px; }
+  .test-card {
+    background: var(--dark-3); padding: 36px;
+    border: 1px solid rgba(201,168,76,0.1); transition: border-color 0.3s, transform 0.3s;
+  }
+  .test-card:hover { border-color: rgba(201,168,76,0.4); transform: translateY(-4px); }
+  .test-card-quote { font-family: 'Cormorant Garamond', serif; font-size: 16px; font-style: italic; line-height: 1.7; color: var(--white-dim); margin-bottom: 24px; }
+  .test-card-author { font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); }
+
+  /* COLLECTION */
+  .collection { padding: 120px 60px; background: var(--dark); }
+  .collection-header { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: end; margin-bottom: 80px; }
+  .collection-header p { font-size: 13px; line-height: 1.9; color: var(--white-dim); letter-spacing: 0.03em; }
+  .coll-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+  .coll-card { background: var(--dark-3); overflow: hidden; transition: transform 0.4s cubic-bezier(0.23,1,0.32,1); }
+  .coll-card:hover { transform: translateY(-8px); }
+  .coll-img { width: 100%; height: 260px; object-fit: cover; filter: brightness(0.8); transition: transform 0.6s cubic-bezier(0.23,1,0.32,1), filter 0.4s; }
+  .coll-card:hover .coll-img { transform: scale(1.04); filter: brightness(0.9); }
+  .coll-body { padding: 28px; }
+  .coll-tier { display: inline-block; font-size: 8px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--black); background: var(--gold); padding: 4px 12px; margin-bottom: 16px; }
+  .coll-name { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 400; color: var(--white); margin-bottom: 10px; }
+  .coll-location { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; }
+  .coll-desc { font-size: 12px; line-height: 1.7; color: var(--white-dim); margin-bottom: 24px; }
+  .coll-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 20px; border-top: 1px solid rgba(248,244,238,0.08); }
+  .coll-price { font-family: 'Cormorant Garamond', serif; font-size: 22px; color: var(--gold); }
+  .coll-price span { font-size: 11px; color: var(--white-dim); font-family: 'Tenor Sans', sans-serif; }
+  .coll-book { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--white); text-decoration: none; border-bottom: 1px solid var(--gold); padding-bottom: 2px; transition: color 0.3s; }
+  .coll-book:hover { color: var(--gold); }
+
+  /* BOOKING */
+  .booking-cta { padding: 140px 60px; background: var(--dark-2); display: grid; grid-template-columns: 1fr 1fr; gap: 100px; align-items: center; }
+  .booking-form { background: var(--dark-3); padding: 56px; border: 1px solid rgba(201,168,76,0.15); }
+  .form-title { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 300; margin-bottom: 8px; }
+  .form-subtitle { font-size: 11px; color: var(--white-dim); letter-spacing: 0.1em; margin-bottom: 40px; }
+  .form-group { margin-bottom: 24px; }
+  .form-label { display: block; font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+  .form-input, .form-select {
+    width: 100%; background: rgba(248,244,238,0.04); border: 1px solid rgba(248,244,238,0.1);
+    color: var(--white); padding: 14px 18px; font-family: 'Tenor Sans', sans-serif;
+    font-size: 13px; outline: none; transition: border-color 0.3s;
+  }
+  .form-input:focus, .form-select:focus { border-color: var(--gold); }
+  .form-input::placeholder { color: rgba(248,244,238,0.3); }
+  .form-select { appearance: none; }
+  .form-select option { background: var(--dark-3); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-submit {
+    width: 100%; background: var(--gold); color: var(--black); border: none;
+    padding: 18px; font-family: 'Tenor Sans', sans-serif; font-size: 10px;
+    letter-spacing: 0.25em; text-transform: uppercase; cursor: pointer;
+    margin-top: 8px; transition: background 0.3s, transform 0.2s;
+  }
+  .form-submit:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+  /* CONCIERGE */
+  .concierge { padding: 140px 60px; background: var(--gold); text-align: center; }
+  .concierge .section-label { color: rgba(0,0,0,0.5); }
+  .concierge .section-title { color: var(--black); }
+  .concierge .section-title em { color: rgba(0,0,0,0.6); }
+  .concierge p { font-size: 13px; line-height: 1.9; color: rgba(0,0,0,0.65); max-width: 560px; margin: 24px auto 48px; letter-spacing: 0.03em; }
+  .concierge-actions { display: flex; justify-content: center; gap: 20px; }
+  .btn-dark { background: var(--black); color: var(--gold); padding: 18px 48px; font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; text-decoration: none; transition: all 0.3s; }
+  .btn-dark:hover { background: var(--dark-3); }
+  .btn-outline-dark { background: transparent; color: var(--black); border: 1px solid var(--black); padding: 18px 48px; font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; text-decoration: none; transition: all 0.3s; }
+  .btn-outline-dark:hover { background: var(--black); color: var(--gold); }
+
+  /* AWARDS */
+  .awards { padding: 80px 60px; background: var(--black); border-top: 1px solid rgba(201,168,76,0.1); border-bottom: 1px solid rgba(201,168,76,0.1); }
+  .awards-inner { display: flex; justify-content: space-between; align-items: center; gap: 40px; }
+  .awards-label { font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--white-dim); white-space: nowrap; }
+  .awards-divider { width: 1px; height: 40px; background: rgba(248,244,238,0.1); }
+  .award-item { text-align: center; }
+  .award-name { font-family: 'Cormorant Garamond', serif; font-size: 15px; font-style: italic; color: var(--gold); margin-bottom: 4px; }
+  .award-year { font-size: 9px; letter-spacing: 0.2em; color: var(--white-dim); }
+
+  /* FOOTER */
+  footer { background: var(--dark); padding: 80px 60px 40px; }
+  .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; padding-bottom: 60px; border-bottom: 1px solid rgba(248,244,238,0.08); margin-bottom: 40px; }
+  .footer-brand-logo { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 300; letter-spacing: 0.2em; color: var(--white); margin-bottom: 16px; }
+  .footer-brand-logo span { color: var(--gold); font-style: italic; }
+  .footer-brand-desc { font-size: 12px; line-height: 1.8; color: var(--white-dim); letter-spacing: 0.03em; margin-bottom: 28px; }
+  .footer-socials { display: flex; gap: 16px; }
+  .social-link { width: 36px; height: 36px; border: 1px solid rgba(248,244,238,0.15); display: flex; align-items: center; justify-content: center; color: var(--white-dim); text-decoration: none; font-size: 12px; transition: all 0.3s; }
+  .social-link:hover { border-color: var(--gold); color: var(--gold); }
+  .footer-col h4 { font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 24px; }
+  .footer-col ul { list-style: none; }
+  .footer-col ul li { margin-bottom: 12px; }
+  .footer-col ul a { font-size: 12px; color: var(--white-dim); text-decoration: none; letter-spacing: 0.05em; transition: color 0.3s; }
+  .footer-col ul a:hover { color: var(--gold); }
+  .footer-bottom { display: flex; justify-content: space-between; align-items: center; }
+  .footer-copy { font-size: 11px; color: rgba(248,244,238,0.3); letter-spacing: 0.1em; }
+  .footer-copy span { color: var(--gold); }
+  .footer-legal { display: flex; gap: 24px; }
+  .footer-legal a { font-size: 10px; color: rgba(248,244,238,0.3); text-decoration: none; letter-spacing: 0.1em; transition: color 0.3s; }
+  .footer-legal a:hover { color: var(--gold); }
+
+  /* MOBILE */
+  .mobile-menu-btn { display: none; background: none; border: none; cursor: pointer; flex-direction: column; gap: 5px; padding: 4px; }
+  .mobile-menu-btn span { display: block; width: 24px; height: 1px; background: var(--white); }
+
+  /* SCROLL REVEAL */
+  .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s cubic-bezier(0.23,1,0.32,1), transform 0.8s cubic-bezier(0.23,1,0.32,1); }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+
+  @media (max-width: 1024px) {
+    nav { padding: 24px 32px; }
+    .nav-links { display: none; }
+    .mobile-menu-btn { display: flex; }
+    .hero { padding: 0 32px 60px; }
+    .hero-stats { display: none; }
+    .hero-scroll { right: 32px; }
+    .destinations { padding: 80px 32px; }
+    .dest-grid { grid-template-columns: 1fr 1fr; }
+    .dest-card:first-child { grid-column: span 2; height: 400px; }
+    .dest-card:not(:first-child) { height: 260px; }
+    .philosophy { grid-template-columns: 1fr; padding: 80px 32px; }
+    .philosophy-visual { display: none; }
+    .experiences { padding: 80px 32px; }
+    .exp-item { grid-template-columns: 60px 1fr; gap: 20px; }
+    .exp-desc, .exp-link { display: none; }
+    .testimonials { padding: 80px 32px; }
+    .test-cards { grid-template-columns: 1fr; }
+    .collection { padding: 80px 32px; }
+    .collection-header { grid-template-columns: 1fr; }
+    .coll-grid { grid-template-columns: 1fr; }
+    .booking-cta { grid-template-columns: 1fr; padding: 80px 32px; }
+    .concierge { padding: 80px 32px; }
+    .concierge-actions { flex-direction: column; align-items: center; }
+    .awards { padding: 60px 32px; }
+    .awards-inner { flex-wrap: wrap; justify-content: center; gap: 24px; }
+    .awards-divider { display: none; }
+    footer { padding: 60px 32px 32px; }
+    .footer-top { grid-template-columns: 1fr 1fr; gap: 40px; }
+    .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
+    .destinations-header { flex-direction: column; gap: 24px; }
+  }
+  @media (max-width: 600px) {
+    .hero-title { font-size: 52px; }
+    .hero-actions { flex-direction: column; align-items: flex-start; }
+    .dest-grid { grid-template-columns: 1fr; }
+    .dest-card:first-child { grid-column: span 1; height: 340px; }
+    .footer-top { grid-template-columns: 1fr; }
+    .booking-form { padding: 32px 24px; }
+    .form-row { grid-template-columns: 1fr; }
+    nav { padding: 20px 24px; }
+  }
+</style>
 </head>
-<body class="min-h-screen bg-[#fafafc] relative overflow-x-hidden font-sans text-slate-800 selection:bg-orange-200 selection:text-slate-900">
+<body>
 
-    <!-- Dynamic Background Glow following mouse -->
-    <div id="mouse-glow" class="absolute w-[600px] h-[600px] bg-gradient-to-tr from-orange-200/40 to-rose-200/40 rounded-full blur-[120px] pointer-events-none transition-transform duration-1000 ease-out z-0"></div>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
 
-    <!-- --- ANIMATED HEADER --- -->
-    <header class="fixed w-full z-50 top-4 px-4 sm:px-6 flex justify-center transition-all duration-500">
-        <div id="header-container" class="w-full max-w-5xl transition-all duration-500 rounded-full flex justify-between items-center px-4 sm:px-6 py-2 sm:py-3 bg-transparent">
-            
-            <!-- Logo -->
-            <div class="flex items-center gap-3 cursor-pointer group">
-                <div class="w-10 h-10 bg-slate-900 text-white rounded-full flex items-center justify-center font-serif font-bold tracking-wider shadow-md group-hover:rotate-12 transition-transform duration-300">
-                    LK
-                </div>
-                <span class="font-bold text-lg hidden sm:block tracking-tight text-slate-900">Lisa Kanning</span>
-            </div>
+<nav>
+  <a href="#" class="nav-logo">PRIME<span>STAY</span></a>
+  <ul class="nav-links">
+    <li><a href="#destinations">Destinations</a></li>
+    <li><a href="#experiences">Experiences</a></li>
+    <li><a href="#collection">Collection</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#booking" class="nav-cta">Reserve Now</a>
+  <button class="mobile-menu-btn" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
 
-            <!-- Desktop Nav -->
-            <nav class="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-600">
-                <a href="#home" class="hover:text-orange-500 transition-colors">Home</a>
-                <a href="#about" class="hover:text-orange-500 transition-colors">About Us</a>
-                <a href="#projects" class="hover:text-orange-500 transition-colors">Portfolio</a>
-            </nav>
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="hero-stat-num">47</div><div class="hero-stat-label">Destinations</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">12K+</div><div class="hero-stat-label">Elite Guests</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">100%</div><div class="hero-stat-label">Bespoke</div></div>
+  </div>
+  <p class="hero-eyebrow">Across The Americas · Est. 2009</p>
+  <h1 class="hero-title">The Art of<br><em>Extraordinary</em><br>Travel</h1>
+  <p class="hero-desc">Curated ultra-luxury escapes across America's most coveted destinations. Where every stay is a masterpiece, every moment, an heirloom.</p>
+  <div class="hero-actions">
+    <a href="#destinations" class="btn-primary"><span>Explore Destinations</span></a>
+    <a href="#collection" class="btn-ghost">View Collection</a>
+  </div>
+  <div class="hero-scroll">
+    <div class="hero-scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
 
-            <!-- CTA -->
-            <a href="#contact" class="hidden md:flex items-center gap-2 bg-slate-900 text-white px-6 py-3 rounded-full text-sm font-bold hover:bg-orange-500 hover:-translate-y-1 hover:shadow-xl hover:shadow-orange-500/20 transition-all duration-300">
-                Let's Talk <i data-lucide="arrow-up-right" class="w-[18px] h-[18px]"></i>
-            </a>
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span>Manhattan Elite</span><span class="marquee-sep">◆</span>
+    <span>Malibu Shores</span><span class="marquee-sep">◆</span>
+    <span>Aspen Highlands</span><span class="marquee-sep">◆</span>
+    <span>Miami Vice Suites</span><span class="marquee-sep">◆</span>
+    <span>Napa Valley Estate</span><span class="marquee-sep">◆</span>
+    <span>Chicago Pinnacle</span><span class="marquee-sep">◆</span>
+    <span>Hawaii Paradiso</span><span class="marquee-sep">◆</span>
+    <span>Las Vegas Apex</span><span class="marquee-sep">◆</span>
+    <span>Manhattan Elite</span><span class="marquee-sep">◆</span>
+    <span>Malibu Shores</span><span class="marquee-sep">◆</span>
+    <span>Aspen Highlands</span><span class="marquee-sep">◆</span>
+    <span>Miami Vice Suites</span><span class="marquee-sep">◆</span>
+    <span>Napa Valley Estate</span><span class="marquee-sep">◆</span>
+    <span>Chicago Pinnacle</span><span class="marquee-sep">◆</span>
+    <span>Hawaii Paradiso</span><span class="marquee-sep">◆</span>
+    <span>Las Vegas Apex</span><span class="marquee-sep">◆</span>
+  </div>
+</div>
 
-            <!-- Mobile Menu Toggle -->
-            <button id="mobile-menu-btn" class="md:hidden w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md text-slate-900 hover:bg-orange-50 hover:text-orange-500 transition-colors">
-                <i data-lucide="menu" class="w-5 h-5"></i>
-            </button>
-        </div>
-
-        <!-- Mobile Dropdown Menu -->
-        <div id="mobile-dropdown" class="absolute top-[120%] left-4 right-4 bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/50 p-6 flex flex-col gap-4 opacity-0 pointer-events-none transform -translate-y-4 transition-all duration-300 md:hidden">
-            <a href="#home" class="text-lg font-bold text-slate-900 hover:text-orange-500 mobile-link">Home</a>
-            <a href="#about" class="text-lg font-bold text-slate-900 hover:text-orange-500 mobile-link">About Us</a>
-            <a href="#projects" class="text-lg font-bold text-slate-900 hover:text-orange-500 mobile-link">Portfolio</a>
-            <a href="#contact" class="flex items-center justify-between bg-slate-900 text-white px-6 py-4 rounded-full text-sm font-bold mt-2 mobile-link">
-                Let's Talk <i data-lucide="arrow-up-right" class="w-5 h-5"></i>
-            </a>
-        </div>
-    </header>
-
-    <!-- --- IMMERSIVE HERO SECTION --- -->
-    <section id="home" class="pt-32 md:pt-40 pb-20 px-4 sm:px-6 max-w-7xl mx-auto relative z-10">
-        <div class="text-center mb-12 reveal-on-scroll">
-            <div class="inline-flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-md rounded-full shadow-sm border border-slate-200 text-sm font-semibold mb-6 hover:scale-105 transition-transform cursor-pointer">
-                <i data-lucide="sparkles" class="w-4 h-4 text-orange-500 animate-pulse"></i>
-                <span class="bg-clip-text text-transparent bg-gradient-to-r from-orange-500 to-rose-500">
-                    Redefining Luxury Living
-                </span>
-            </div>
-            <h1 class="text-5xl sm:text-6xl md:text-[5.5rem] font-serif text-slate-900 tracking-tight leading-[1.05] mb-6 drop-shadow-sm">
-                Timeless <span class="italic text-slate-400 font-light">&</span><br/> Beautiful Spaces.
-            </h1>
-        </div>
-
-        <!-- Interactive Hero Image -->
-        <div class="relative w-full h-[50vh] md:h-[70vh] rounded-[2.5rem] md:rounded-[3rem] overflow-hidden shadow-[0_30px_60px_rgb(0,0,0,0.12)] group reveal-on-scroll delay-100">
-            <img 
-                src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" 
-                alt="Hero Interior" 
-                class="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-110"
-            />
-            
-            <!-- Play Button Overlay -->
-            <div class="absolute inset-0 bg-slate-900/10 group-hover:bg-slate-900/0 transition-colors duration-500 flex items-center justify-center cursor-pointer">
-                <div class="w-20 h-20 bg-white/30 backdrop-blur-md rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transform scale-50 group-hover:scale-100 transition-all duration-500 shadow-2xl">
-                    <i data-lucide="play" class="w-8 h-8 fill-current ml-1"></i>
-                </div>
-            </div>
-            
-            <!-- Floating Glass Card (Best of Houzz) -->
-            <div class="absolute bottom-6 left-6 right-6 md:bottom-10 md:left-10 md:right-auto md:w-80 bg-white/80 backdrop-blur-xl border border-white/50 p-6 rounded-3xl shadow-2xl float-animation">
-                <div class="flex items-center gap-4 mb-4">
-                    <div class="w-12 h-12 bg-gradient-to-br from-green-400 to-emerald-600 rounded-full flex items-center justify-center text-white shadow-lg">
-                        <i data-lucide="award" class="w-6 h-6"></i>
-                    </div>
-                    <div>
-                        <h3 class="font-bold text-slate-900 leading-none mb-1">Best of Houzz</h3>
-                        <p class="text-xs text-slate-500 uppercase tracking-wider font-bold">Design 2022 Award</p>
-                    </div>
-                </div>
-                <p class="text-sm text-slate-600 font-medium">
-                    Over 20 years of crafting stunning, customized interiors in New York and nationwide.
-                </p>
-            </div>
-        </div>
-    </section>
-
-    <!-- --- ANIMATED TICKER TAPE --- -->
-    <div class="ticker-container transform -rotate-2 scale-105 shadow-2xl relative z-20 reveal-on-scroll delay-200">
-        <div class="ticker-text text-xl md:text-2xl font-serif font-bold tracking-widest uppercase flex gap-8">
-            <span>✨ Premium Interior Design</span>
-            <span class="text-orange-400">•</span>
-            <span>Modern Home Styling</span>
-            <span class="text-orange-400">•</span>
-            <span>Luxury Living NYC</span>
-            <span class="text-orange-400">•</span>
-            <span>Timeless Spaces</span>
-            <span class="text-orange-400">•</span>
-            <!-- Duplicate for infinite loop -->
-            <span>✨ Premium Interior Design</span>
-            <span class="text-orange-400">•</span>
-            <span>Modern Home Styling</span>
-            <span class="text-orange-400">•</span>
-            <span>Luxury Living NYC</span>
-            <span class="text-orange-400">•</span>
-            <span>Timeless Spaces</span>
-            <span class="text-orange-400">•</span>
-        </div>
+<section class="destinations" id="destinations">
+  <div class="destinations-header reveal">
+    <div>
+      <p class="section-label">Signature Destinations</p>
+      <h2 class="section-title">The Finest<br><em>American</em> Havens</h2>
     </div>
+    <p>Hand-selected properties across America's most prestigious locations. Each destination chosen for its exclusivity, natural splendor, and unrivaled luxury quotient.</p>
+  </div>
+  <div class="dest-grid">
+    <div class="dest-card reveal">
+      <img src="https://images.unsplash.com/photo-1492767084763-0fb1d8fcca31?w=800&q=80" alt="New York">
+      <div class="dest-overlay">
+        <p class="dest-country">New York</p>
+        <h3 class="dest-name">Manhattan Elite</h3>
+        <p class="dest-desc">Penthouse residences above Central Park. Private butler, Michelin dining, helicopter transfers. The pinnacle of urban luxury.</p>
+        <a href="#" class="dest-link">Discover →</a>
+      </div>
+    </div>
+    <div class="dest-card reveal reveal-delay-1">
+      <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80" alt="Malibu">
+      <div class="dest-overlay">
+        <p class="dest-country">California</p>
+        <h3 class="dest-name">Malibu Shores</h3>
+        <p class="dest-desc">Private oceanfront estates with panoramic Pacific views and personal wellness concierge.</p>
+        <a href="#" class="dest-link">Discover →</a>
+      </div>
+    </div>
+    <div class="dest-card reveal reveal-delay-2">
+      <img src="https://images.unsplash.com/photo-1531058020387-3be344556be6?w=600&q=80" alt="Aspen">
+      <div class="dest-overlay">
+        <p class="dest-country">Colorado</p>
+        <h3 class="dest-name">Aspen Highlands</h3>
+        <p class="dest-desc">Ski-in, ski-out chalets with private mountain concierge and alpine dining experiences.</p>
+        <a href="#" class="dest-link">Discover →</a>
+      </div>
+    </div>
+    <div class="dest-card reveal reveal-delay-1">
+      <img src="https://images.unsplash.com/photo-1514214246283-d427a95c5d2f?w=600&q=80" alt="Miami">
+      <div class="dest-overlay">
+        <p class="dest-country">Florida</p>
+        <h3 class="dest-name">Miami Vice Suites</h3>
+        <p class="dest-desc">Art Deco penthouse suites on South Beach with private pool terraces and yacht access.</p>
+        <a href="#" class="dest-link">Discover →</a>
+      </div>
+    </div>
+    <div class="dest-card reveal reveal-delay-2">
+      <img src="https://images.unsplash.com/photo-1504598318550-17eba1008a68?w=600&q=80" alt="Napa">
+      <div class="dest-overlay">
+        <p class="dest-country">California</p>
+        <h3 class="dest-name">Napa Valley Estate</h3>
+        <p class="dest-desc">Private vineyard retreats with sommelier-led tastings and farm-to-table dining.</p>
+        <a href="#" class="dest-link">Discover →</a>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- --- ABOUT (Bouncy Image Stack) --- -->
-    <section id="about" class="py-24 md:py-32 px-6 max-w-7xl mx-auto overflow-hidden">
-        <div class="flex flex-col lg:flex-row gap-16 md:gap-24 items-center">
-            
-            <!-- Double Image Overlap -->
-            <div class="lg:w-1/2 relative w-full h-[500px] reveal-on-scroll">
-                <div class="absolute top-0 left-0 w-3/4 h-[400px] rounded-[3rem] overflow-hidden shadow-2xl hover:-translate-y-4 hover:-rotate-2 transition-all duration-500 cursor-pointer z-20">
-                    <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Design 1" class="w-full h-full object-cover" />
-                </div>
-                <div class="absolute bottom-0 right-0 w-3/4 h-[350px] rounded-[3rem] overflow-hidden shadow-2xl hover:-translate-y-4 hover:rotate-2 transition-all duration-500 cursor-pointer z-10 border-8 border-[#fafafc]">
-                    <img src="https://images.unsplash.com/photo-1600607687920-4e2a09be1587?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Design 2" class="w-full h-full object-cover" />
-                </div>
-                <!-- Decorative Circle -->
-                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-orange-500 rounded-full blur-[80px] -z-10"></div>
-            </div>
+<section class="philosophy" id="about">
+  <div class="philosophy-visual">
+    <img class="philosophy-img-main" src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=700&q=80" alt="Luxury interior">
+    <img class="philosophy-img-secondary" src="https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=400&q=80" alt="Hotel amenity">
+    <div class="philosophy-badge">
+      <div class="philosophy-badge-num">15</div>
+      <div class="philosophy-badge-text">Years of<br>Excellence</div>
+    </div>
+  </div>
+  <div class="philosophy-content reveal">
+    <p class="section-label">Our Philosophy</p>
+    <h2 class="section-title" style="margin-bottom:32px">Beyond<br><em>Hospitality.</em><br>An Art Form.</h2>
+    <p>At PrimeStay, we believe luxury is not a price point — it's a feeling. The feeling of arriving somewhere that knows you before you speak, that anticipates your desires before you voice them.</p>
+    <p>Every property in our collection is a living work of art. Curated over a decade with the eye of a collector, the rigor of an architect, and the heart of a host.</p>
+    <div class="philosophy-features">
+      <div class="phi-feature">
+        <div class="phi-feature-icon">✦</div>
+        <div class="phi-feature-title">24/7 Concierge</div>
+        <div class="phi-feature-desc">Personal attaches available around the clock for every request, no matter how extraordinary.</div>
+      </div>
+      <div class="phi-feature">
+        <div class="phi-feature-icon">◈</div>
+        <div class="phi-feature-title">Private Transfers</div>
+        <div class="phi-feature-desc">Helicopter, seaplane, and private jet arrivals arranged seamlessly from any city.</div>
+      </div>
+      <div class="phi-feature">
+        <div class="phi-feature-icon">❋</div>
+        <div class="phi-feature-title">Michelin Dining</div>
+        <div class="phi-feature-desc">In-residence dinners curated by starred chefs. Your table, your menu, your moment.</div>
+      </div>
+      <div class="phi-feature">
+        <div class="phi-feature-icon">◉</div>
+        <div class="phi-feature-title">Bespoke Experiences</div>
+        <div class="phi-feature-desc">Each itinerary built from scratch for you. No templates, no compromises.</div>
+      </div>
+    </div>
+  </div>
+</section>
 
-            <div class="lg:w-1/2 space-y-8 reveal-on-scroll delay-200">
-                <div class="inline-block border border-slate-200 rounded-full px-4 py-1.5 text-xs font-bold text-slate-500 uppercase tracking-widest">
-                    Our Philosophy
-                </div>
-                <h2 class="text-4xl md:text-5xl font-serif text-slate-900 leading-tight">
-                    We design homes that <span class="text-orange-500 italic">tell your story.</span>
-                </h2>
-                <div class="space-y-4 text-lg text-slate-600 font-medium">
-                    <p>
-                        LKID doesn't just fill rooms with furniture; we create atmospheres that reflect your unique personality and lifestyle.
-                    </p>
-                    <p>
-                        Whether it's a completely new build or refreshing an existing space, our attention to detail ensures a perfect blend of absolute luxury and comfort.
-                    </p>
-                </div>
+<section class="experiences" id="experiences">
+  <div class="experiences-header reveal">
+    <p class="section-label">Curated Experiences</p>
+    <h2 class="section-title">What You'll <em>Remember</em></h2>
+  </div>
+  <div>
+    <div class="exp-item reveal">
+      <span class="exp-num">01</span>
+      <h3 class="exp-name">Private Island Escapes</h3>
+      <p class="exp-desc">Exclusive access to private islands off the Florida Keys and Pacific Northwest. Your own paradise, untouched.</p>
+      <a href="#" class="exp-link">Enquire →</a>
+    </div>
+    <div class="exp-item reveal">
+      <span class="exp-num">02</span>
+      <h3 class="exp-name">Helicopter City Tours</h3>
+      <p class="exp-desc">See Manhattan, LA, and Chicago from above. Sunset flights with champagne and personal photography.</p>
+      <a href="#" class="exp-link">Enquire →</a>
+    </div>
+    <div class="exp-item reveal">
+      <span class="exp-num">03</span>
+      <h3 class="exp-name">Sommelier Journeys</h3>
+      <p class="exp-desc">Private tastings at Napa's most storied estates. Cellars that never open to the public — open for you.</p>
+      <a href="#" class="exp-link">Enquire →</a>
+    </div>
+    <div class="exp-item reveal">
+      <span class="exp-num">04</span>
+      <h3 class="exp-name">Wellness Sanctuaries</h3>
+      <p class="exp-desc">In-villa spa rituals designed by world-class therapists. Ayurveda, cryotherapy, holistic renewal.</p>
+      <a href="#" class="exp-link">Enquire →</a>
+    </div>
+    <div class="exp-item reveal">
+      <span class="exp-num">05</span>
+      <h3 class="exp-name">Art & Culture Immersions</h3>
+      <p class="exp-desc">After-hours museum access, private gallery tours, and studio visits with America's leading artists.</p>
+      <a href="#" class="exp-link">Enquire →</a>
+    </div>
+  </div>
+</section>
 
-                <!-- Stat counters -->
-                <div class="grid grid-cols-3 gap-4 pt-6 border-t border-slate-200">
-                    <div>
-                        <h4 class="text-3xl font-bold text-slate-900">20+</h4>
-                        <p class="text-xs text-slate-500 font-bold uppercase tracking-wider mt-1">Years Experience</p>
-                    </div>
-                    <div>
-                        <h4 class="text-3xl font-bold text-slate-900">100%</h4>
-                        <p class="text-xs text-slate-500 font-bold uppercase tracking-wider mt-1">Client Satisfaction</p>
-                    </div>
-                    <div>
-                        <h4 class="text-3xl font-bold text-slate-900">50+</h4>
-                        <p class="text-xs text-slate-500 font-bold uppercase tracking-wider mt-1">Projects</p>
-                    </div>
-                </div>
-            </div>
+<section class="testimonials">
+  <div class="testimonials-inner">
+    <div class="test-stars reveal"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+    <blockquote class="test-quote reveal" id="quoteText">"PrimeStay didn't just give us a place to sleep. They gave us a memory we'll spend the rest of our lives trying to describe."</blockquote>
+    <p class="test-author reveal" id="quoteAuthor">Victoria & James Hartwell</p>
+    <p class="test-role reveal" id="quoteRole">Manhattan Elite, Penthouse Suite</p>
+    <div class="test-dots">
+      <div class="test-dot active"></div>
+      <div class="test-dot"></div>
+      <div class="test-dot"></div>
+    </div>
+  </div>
+  <div class="test-cards">
+    <div class="test-card reveal"><p class="test-card-quote">"The concierge arranged a private fireworks show over the bay for our anniversary. I still can't believe it was real."</p><p class="test-card-author">— Sofia R., Malibu Shores</p></div>
+    <div class="test-card reveal reveal-delay-1"><p class="test-card-quote">"Three Michelin-starred dinners in our suite, a helicopter to Aspen, and staff who remembered my wife's name. Five stars doesn't cover it."</p><p class="test-card-author">— David K., Aspen Highlands</p></div>
+    <div class="test-card reveal reveal-delay-2"><p class="test-card-quote">"I've stayed in the finest hotels worldwide. PrimeStay is in a category of one. The difference is that here, you feel known."</p><p class="test-card-author">— Priya M., Napa Valley Estate</p></div>
+  </div>
+</section>
 
-        </div>
-    </section>
+<section class="collection" id="collection">
+  <div class="collection-header reveal">
+    <div>
+      <p class="section-label">The Collection</p>
+      <h2 class="section-title">Handpicked<br><em>Properties</em></h2>
+    </div>
+    <p>Every property undergoes a 200-point inspection by our luxury hospitality experts before earning the PrimeStay designation. Less than 3% of properties reviewed make it through.</p>
+  </div>
+  <div class="coll-grid">
+    <div class="coll-card reveal">
+      <img class="coll-img" src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600&q=80" alt="Manhattan Penthouse">
+      <div class="coll-body">
+        <span class="coll-tier">Ultra Luxury</span>
+        <h3 class="coll-name">Park Avenue Penthouse</h3>
+        <p class="coll-location">◆ New York City, New York</p>
+        <p class="coll-desc">Six-bedroom sky residence with 360° Manhattan views, private rooftop pool, and full-time house staff.</p>
+        <div class="coll-footer"><div class="coll-price">$8,500 <span>/ night</span></div><a href="#" class="coll-book">Reserve</a></div>
+      </div>
+    </div>
+    <div class="coll-card reveal reveal-delay-1">
+      <img class="coll-img" src="https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=600&q=80" alt="Beach Villa">
+      <div class="coll-body">
+        <span class="coll-tier">Signature</span>
+        <h3 class="coll-name">Pacific Crest Villa</h3>
+        <p class="coll-location">◆ Malibu, California</p>
+        <p class="coll-desc">Clifftop retreat with private beach access, infinity pool, and in-house chef on request.</p>
+        <div class="coll-footer"><div class="coll-price">$5,200 <span>/ night</span></div><a href="#" class="coll-book">Reserve</a></div>
+      </div>
+    </div>
+    <div class="coll-card reveal reveal-delay-2">
+      <img class="coll-img" src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=600&q=80" alt="Mountain Lodge">
+      <div class="coll-body">
+        <span class="coll-tier">Elite</span>
+        <h3 class="coll-name">Summit Lodge Aspen</h3>
+        <p class="coll-location">◆ Aspen, Colorado</p>
+        <p class="coll-desc">Ski-in, ski-out chalet with fireside dining room, wine cellar, and dedicated slope butler.</p>
+        <div class="coll-footer"><div class="coll-price">$6,900 <span>/ night</span></div><a href="#" class="coll-book">Reserve</a></div>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- --- PORTFOLIO (Interactive Bento Grid) --- -->
-    <section id="projects" class="py-20 px-6 max-w-7xl mx-auto">
-        <div class="flex justify-between items-end mb-12 reveal-on-scroll">
-            <div>
-                <span class="text-sm font-bold text-orange-500 tracking-wider uppercase mb-2 block">Our Work</span>
-                <h2 class="text-4xl md:text-5xl font-serif text-slate-900">Featured Projects</h2>
-            </div>
-            <button class="hidden md:flex items-center gap-2 font-bold text-slate-600 hover:text-orange-500 transition-colors group">
-                View All <i data-lucide="move-right" class="w-[18px] h-[18px] group-hover:translate-x-1 transition-transform"></i>
-            </button>
-        </div>
+<section class="booking-cta" id="booking">
+  <div class="reveal">
+    <p class="section-label">Begin Your Journey</p>
+    <h2 class="section-title" style="margin-bottom:28px">Reserve Your<br><em>Extraordinary</em> Stay</h2>
+    <p style="font-size:13px;line-height:1.9;color:var(--white-dim);letter-spacing:0.03em;margin-bottom:20px">Our reservation specialists are available 24 hours a day. Each inquiry receives a personal response within 2 hours from a dedicated PrimeStay host — not an algorithm.</p>
+    <p style="font-size:12px;color:var(--gold);letter-spacing:0.15em;">✦ &nbsp;Complimentary consultation included with every inquiry</p>
+  </div>
+  <div class="booking-form reveal">
+    <h3 class="form-title">Make a Reservation</h3>
+    <p class="form-subtitle">Bespoke journeys · Minimum 2 nights</p>
+    <div class="form-group"><label class="form-label">Full Name</label><input class="form-input" type="text" placeholder="Your full name"></div>
+    <div class="form-group"><label class="form-label">Email Address</label><input class="form-input" type="email" placeholder="your@email.com"></div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Arrival</label><input class="form-input" type="date"></div>
+      <div class="form-group"><label class="form-label">Departure</label><input class="form-input" type="date"></div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Destination</label>
+      <select class="form-select">
+        <option>Select destination...</option>
+        <option>Manhattan Elite — New York</option>
+        <option>Malibu Shores — California</option>
+        <option>Aspen Highlands — Colorado</option>
+        <option>Miami Vice Suites — Florida</option>
+        <option>Napa Valley Estate — California</option>
+        <option>Hawaii Paradiso</option>
+      </select>
+    </div>
+    <div class="form-group"><label class="form-label">Special Requests</label><input class="form-input" type="text" placeholder="Champagne on arrival, helicopter transfer..."></div>
+    <button class="form-submit">Request Reservation →</button>
+  </div>
+</section>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:h-[600px]">
-            
-            <!-- Card 1 (Large) -->
-            <div class="md:col-span-2 md:row-span-2 relative rounded-[2rem] overflow-hidden group shadow-lg cursor-pointer reveal-on-scroll">
-                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Project 1" class="w-full h-full object-cover transition-transform duration-[1.5s] group-hover:scale-105" />
-                <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/20 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-500"></div>
-                
-                <div class="absolute bottom-0 left-0 p-8 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                    <div class="bg-white/20 backdrop-blur-md px-4 py-1.5 rounded-full text-white text-xs font-bold w-max mb-4 shadow-sm border border-white/30">
-                        Residential
-                    </div>
-                    <h3 class="text-3xl md:text-4xl font-serif text-white mb-2 drop-shadow-md">Manhattan Penthouse</h3>
-                    <p class="text-white/80 font-medium flex items-center gap-2">
-                        New York, NY <i data-lucide="arrow-up-right" class="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity"></i>
-                    </p>
-                </div>
-            </div>
+<section class="concierge">
+  <p class="section-label reveal">White Glove Service</p>
+  <h2 class="section-title reveal">Your Personal<br><em>Concierge</em> Awaits</h2>
+  <p class="reveal">Available 24/7, our team of luxury specialists can arrange anything — from private jet charters and superyacht bookings to securing reservations at the world's most exclusive restaurants.</p>
+  <div class="concierge-actions reveal">
+    <a href="tel:+18005550100" class="btn-dark">Call +1 800 555 0100</a>
+    <a href="mailto:concierge@primestay.com" class="btn-outline-dark">Email Concierge</a>
+  </div>
+</section>
 
-            <!-- Card 2 (Small) -->
-            <div class="relative rounded-[2rem] overflow-hidden group shadow-lg h-[300px] md:h-auto cursor-pointer reveal-on-scroll delay-100">
-                <img src="https://images.unsplash.com/photo-1600566752355-35792bedcfea?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Project 2" class="w-full h-full object-cover transition-transform duration-[1.5s] group-hover:scale-105" />
-                <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 to-transparent opacity-70 group-hover:opacity-100 transition-opacity duration-500"></div>
-                
-                <div class="absolute bottom-0 left-0 p-6 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
-                    <h3 class="text-2xl font-serif text-white mb-1">Brooklyn Loft</h3>
-                    <p class="text-white/80 text-sm font-medium">Industrial Modern</p>
-                </div>
-            </div>
+<div class="awards reveal">
+  <div class="awards-inner">
+    <p class="awards-label">Recognized by the world's finest</p>
+    <div class="awards-divider"></div>
+    <div class="award-item"><div class="award-name">Forbes Travel Guide</div><div class="award-year">5-Star Certified · 2024</div></div>
+    <div class="awards-divider"></div>
+    <div class="award-item"><div class="award-name">Condé Nast Traveler</div><div class="award-year">Gold List · 2023 & 2024</div></div>
+    <div class="awards-divider"></div>
+    <div class="award-item"><div class="award-name">Travel + Leisure</div><div class="award-year">World's Best · 2024</div></div>
+    <div class="awards-divider"></div>
+    <div class="award-item"><div class="award-name">Virtuoso Network</div><div class="award-year">Premier Partner</div></div>
+  </div>
+</div>
 
-            <!-- Card 3 (Small - Fixed) -->
-            <div class="relative rounded-[2rem] overflow-hidden group shadow-lg h-[300px] md:h-auto cursor-pointer reveal-on-scroll delay-200">
-                <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Project 3" class="w-full h-full object-cover transition-transform duration-[1.5s] group-hover:scale-105" />
-                <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 to-transparent opacity-70 group-hover:opacity-100 transition-opacity duration-500"></div>
-                
-                <div class="absolute bottom-0 left-0 p-6 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
-                    <h3 class="text-2xl font-serif text-white mb-1">Hamptons Estate</h3>
-                    <p class="text-white/80 text-sm font-medium">Coastal Luxury</p>
-                </div>
-            </div>
+<footer id="contact">
+  <div class="footer-top">
+    <div>
+      <div class="footer-brand-logo">PRIME<span>STAY</span></div>
+      <p class="footer-brand-desc">America's premier ultra-luxury travel curator. Every property. Every experience. Every moment — exceptional.</p>
+      <div class="footer-socials">
+        <a href="#" class="social-link">in</a>
+        <a href="#" class="social-link">ig</a>
+        <a href="#" class="social-link">tw</a>
+        <a href="#" class="social-link">yt</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Destinations</h4>
+      <ul>
+        <li><a href="#">New York</a></li><li><a href="#">California</a></li>
+        <li><a href="#">Colorado</a></li><li><a href="#">Florida</a></li>
+        <li><a href="#">Hawaii</a></li><li><a href="#">All Destinations</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="#">Private Transfers</a></li><li><a href="#">In-Villa Dining</a></li>
+        <li><a href="#">Wellness & Spa</a></li><li><a href="#">Event Planning</a></li>
+        <li><a href="#">Corporate Retreats</a></li><li><a href="#">Honeymoon Packages</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About PrimeStay</a></li><li><a href="#">Our Standards</a></li>
+        <li><a href="#">Press</a></li><li><a href="#">Careers</a></li>
+        <li><a href="#">Partner With Us</a></li><li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copy">© 2026 <span>PrimeStay</span>. All rights reserved. Luxury Redefined.</p>
+    <div class="footer-legal">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+      <a href="#">Cookie Policy</a>
+    </div>
+  </div>
+</footer>
 
-        </div>
-    </section>
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.transform = `translate(${mx - 6}px, ${my - 6}px)`;
+  });
+  function animateRing() {
+    rx += (mx - rx - 20) * 0.12;
+    ry += (my - ry - 20) * 0.12;
+    ring.style.transform = `translate(${rx}px, ${ry}px)`;
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
 
-    <!-- --- ANIMATED FOOTER --- -->
-    <footer id="contact" class="px-4 sm:px-6 pb-6 mt-20 max-w-7xl mx-auto reveal-on-scroll">
-        <div class="bg-[#0f172a] rounded-[3rem] p-10 sm:p-16 text-white relative overflow-hidden shadow-2xl group hover:shadow-orange-500/10 transition-shadow duration-500">
-            
-            <!-- Fancy Footer Background Blur -->
-            <div class="absolute -top-20 -right-20 w-96 h-96 bg-gradient-to-br from-orange-500/20 to-rose-500/20 rounded-full blur-[80px] group-hover:scale-150 transition-transform duration-[2s]"></div>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
 
-            <div class="relative z-10 flex flex-col md:flex-row justify-between gap-12">
-                
-                <div class="md:w-1/2">
-                    <h2 class="text-4xl md:text-[3.5rem] font-serif mb-8 leading-tight">
-                        Ready to start <br/><span class="text-orange-400">your project?</span>
-                    </h2>
-                    <button class="bg-white text-slate-900 px-8 py-4 rounded-full font-bold hover:bg-orange-500 hover:text-white hover:scale-105 transition-all duration-300 inline-flex items-center gap-3 shadow-lg">
-                        info@lkid.com <i data-lucide="arrow-up-right" class="w-5 h-5"></i>
-                    </button>
-                </div>
+  // Testimonial rotation
+  const dots = document.querySelectorAll('.test-dot');
+  const quotes = [
+    { text: '"PrimeStay didn\'t just give us a place to sleep. They gave us a memory we\'ll spend the rest of our lives trying to describe."', author: 'Victoria & James Hartwell', role: 'Manhattan Elite, Penthouse Suite' },
+    { text: '"The concierge arranged a private fireworks show over the bay for our anniversary. I still can\'t believe it was real."', author: 'Sofia R.', role: 'Malibu Shores, Ocean Villa' },
+    { text: '"I\'ve stayed in the finest hotels worldwide. PrimeStay is in a category of one. The difference is that here, you feel known."', author: 'Priya M.', role: 'Napa Valley Estate' },
+  ];
+  let current = 0;
+  const quoteEl = document.getElementById('quoteText');
+  const authorEl = document.getElementById('quoteAuthor');
+  const roleEl = document.getElementById('quoteRole');
 
-                <div class="md:w-1/3 flex flex-col justify-end space-y-8">
-                    <div>
-                        <p class="text-slate-400 text-sm font-bold uppercase tracking-widest mb-2">Address</p>
-                        <p class="text-lg font-medium">390 Wythe Ave #5F<br/>Brooklyn, NY 11249</p>
-                    </div>
-                    <div>
-                        <p class="text-slate-400 text-sm font-bold uppercase tracking-widest mb-2">Call Us</p>
-                        <p class="text-lg font-medium">347.889.5354</p>
-                    </div>
-                    <div class="pt-8 border-t border-slate-700/50 flex justify-between items-center">
-                        <div class="font-serif text-3xl font-bold tracking-wider">LKID</div>
-                        <div class="flex gap-4">
-                            <a href="#" class="bg-white/10 p-3 rounded-full hover:bg-orange-500 hover:rotate-12 transition-all duration-300"><i data-lucide="instagram" class="w-5 h-5"></i></a>
-                            <a href="#" class="bg-white/10 p-3 rounded-full hover:bg-orange-500 hover:-rotate-12 transition-all duration-300"><i data-lucide="facebook" class="w-5 h-5"></i></a>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </footer>
-
-    <!-- JavaScript Logic -->
-    <script>
-        // Initialize Lucide Icons
-        lucide.createIcons();
-
-        // 1. Sticky Header Logic
-        const headerContainer = document.getElementById('header-container');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 20) {
-                headerContainer.classList.remove('bg-transparent');
-                headerContainer.classList.add('bg-white/70', 'backdrop-blur-xl', 'shadow-[0_8px_32px_rgb(0,0,0,0.08)]', 'border', 'border-white/50');
-            } else {
-                headerContainer.classList.add('bg-transparent');
-                headerContainer.classList.remove('bg-white/70', 'backdrop-blur-xl', 'shadow-[0_8px_32px_rgb(0,0,0,0.08)]', 'border', 'border-white/50');
-            }
-        });
-
-        // 2. Dynamic Background Glow Logic
-        const glow = document.getElementById('mouse-glow');
-        window.addEventListener('mousemove', (e) => {
-            // Subtract half the width/height to center the glow on the cursor
-            glow.style.transform = `translate(${e.clientX - 300}px, ${e.clientY - 300}px)`;
-        });
-
-        // 3. Scroll Reveal Animations (Intersection Observer)
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('is-visible');
-                    // Optional: Stop observing once revealed
-                    // observer.unobserve(entry.target);
-                }
-            });
-        }, { 
-            threshold: 0.1, 
-            rootMargin: "0px 0px -50px 0px" 
-        });
-
-        const revealElements = document.querySelectorAll('.reveal-on-scroll');
-        revealElements.forEach((el) => observer.observe(el));
-
-        // 4. Mobile Menu Toggle Logic
-        const menuBtn = document.getElementById('mobile-menu-btn');
-        const mobileDropdown = document.getElementById('mobile-dropdown');
-        const mobileLinks = document.querySelectorAll('.mobile-link');
-        let isMenuOpen = false;
-
-        function toggleMenu() {
-            isMenuOpen = !isMenuOpen;
-            if (isMenuOpen) {
-                mobileDropdown.classList.remove('opacity-0', 'pointer-events-none', '-translate-y-4');
-                menuBtn.innerHTML = '<i data-lucide="x" class="w-5 h-5"></i>';
-            } else {
-                mobileDropdown.classList.add('opacity-0', 'pointer-events-none', '-translate-y-4');
-                menuBtn.innerHTML = '<i data-lucide="menu" class="w-5 h-5"></i>';
-            }
-            lucide.createIcons(); // Re-render icons inside button
-        }
-
-        menuBtn.addEventListener('click', toggleMenu);
-
-        // Close menu when a link is clicked
-        mobileLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                if(isMenuOpen) toggleMenu();
-            });
-        });
-    </script>
+  function switchQuote(i) {
+    current = i;
+    dots.forEach((d, idx) => d.classList.toggle('active', idx === i));
+    quoteEl.style.opacity = '0';
+    setTimeout(() => {
+      quoteEl.textContent = quotes[i].text;
+      authorEl.textContent = quotes[i].author;
+      roleEl.textContent = quotes[i].role;
+      quoteEl.style.opacity = '1';
+    }, 300);
+  }
+  dots.forEach((d, i) => d.addEventListener('click', () => switchQuote(i)));
+  setInterval(() => switchQuote((current + 1) % quotes.length), 5000);
+</script>
 </body>
 </html>
